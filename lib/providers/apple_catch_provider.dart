@@ -37,68 +37,88 @@ class AppleCatchProvider extends ChangeNotifier {
     _gameTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
       _updateGame();
     });
-    _spawnTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
-
-    });
+    _spawnTimer = Timer.periodic(
+      Duration(milliseconds: (spawnInterval * 1000).toInt()),
+          (timer) {
+        _spawnItem();
+      },
+    );
   }
 
   // 게임 업데이트 메서드 (타이머마다 호출)
   void _updateGame() {
     // 모든 아이템의 y 위치 증가
-    // items의 각 아이템에 대해 item.y += item.speed;
+    items.forEach((item) {
+      item.y += item.speed;
+    });
 
     // 화면 밖으로 나간 아이템 처리
-    // items.removeWhere((item) { ... })
+    items.removeWhere((item) {
+      if (item.y > 1.0) {
+        if (item.isGood) {
+          missedApples++;
+        }
+        return true; // 제거
+      }
+      return false;
+    });
+
 
     // 충돌 체크
-    // _checkCollision();
+     _checkCollision();
 
     // 게임 오버 체크
-    // if (_checkGameOver()) { ... }
+    if (_checkGameOver()) {
+      stopGame();
+      return;
+    }
+
 
     // 레벨업 체크 (50점마다)
+    if (score ~/ 50 + 1 > level) {
+      level++;
+      spawnInterval = max(0.6, spawnInterval - 0.2);
+    }
 
     notifyListeners();
   }
 
-  // TODO: 아이템 생성 메서드
+  //  아이템 생성 메서드
   void _spawnItem() {
-    // final random = Random();
-    // 70% 확률로 사과, 30% 확률로 폭탄
-    // final isApple = random.nextDouble() < 0.7;
+     final random = Random();
+     final isApple = random.nextDouble() < 0.7;
 
     // 새로운 FallingItem 생성
-    // final newItem = FallingItem(
-    //   id: 'item_${DateTime.now().millisecondsSinceEpoch}',
-    //   emoji: isApple ? '🍎' : '💣',
-    //   isGood: isApple,
-    //   x: ... // -0.8 ~ 0.8 범위의 랜덤값
-    //   y: -1.0,
-    //   speed: 0.02 * level,
-    // );
+     final newItem = FallingItem(
+       id: 'item_${DateTime.now().millisecondsSinceEpoch}',
+       emoji: isApple ? '🍎' : '💣',
+       isGood: isApple,
+       x: random.nextDouble() *1.6 -0.8,
+       y: -1.0,
+       speed: 0.02 * level,
+     );
 
-    // items.add(newItem);
+     items.add(newItem);
   }
 
-  // TODO: 바구니 이동 메서드
+  //  바구니 이동 메서드
   void moveBasket(double newX) {
     basketX = newX.clamp(-0.9, 0.9);
     notifyListeners();
   }
 
-  // TODO: 충돌 감지 메서드
+  //  충돌 감지 메서드
   void _checkCollision() {
-    // items.removeWhere((item) {
-    //   바구니 영역: basketX ± 0.15, y: 0.8 ~ 1.0
-    //   final inBasketX = (item.x - basketX).abs() < 0.15;
-    //   final inBasketY = item.y > 0.8 && item.y < 1.0;
-    //
-    //   if (inBasketX && inBasketY) {
-    //     점수 처리
-    //     return true; // 아이템 제거
-    //   }
-    //   return false;
-    // });
+     items.removeWhere((item) {
+      final inBasketX = (item.x - basketX).abs() < 0.15;
+       final inBasketY = item.y > 0.8 && item.y < 1.0;
+
+       if (inBasketX && inBasketY) {
+
+         return true; // 아이템 제거
+       }
+       return false;
+     });
   }
 
   //  게임오버 체크 메서드
