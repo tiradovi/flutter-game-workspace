@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres?sslmode=require&prepareThreshold=0
+    username: postgres.nomihokqeyswulhhkleb
+    password: UKQbxR3IaKX7GD0b
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 5
+      idle-timeout: 600000
+      pool-name: MyHikariCP
+      auto-commit: false
+  jpa:
+  hibernate.ddl-auto: update
+
+
+
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.my.todo
+  config-location: classpath:/mybatis-config.xml
+
+log:
+  config:
+    path: ./logs/
+    fileName: application

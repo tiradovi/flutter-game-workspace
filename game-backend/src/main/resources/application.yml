@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: utf-8
+    cache: false
+
+  devtools:
+    restart.additional-paths: src/main/resources/mappers
+
+  web:
+    resources:
+      static-locations: classpath:/static/
+  config:
+    import: classpath:config.yml
+
+mybatis:
+  mapper-locations: classpath:/mappers/**/*.xml
+
