@@ -1,4 +1,5 @@
 import 'package:game_workspace/models/game_item.dart';
+import 'package:game_workspace/screens/chat_screen.dart';
 import 'package:game_workspace/screens/main_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,5 +40,9 @@ class AppRouter {
         );
       },
     ),
+    GoRoute(
+        path: "/chat",
+        name: 'chat',
+        builder: (context, state) => const ChatScreen())
   ]);
 }
