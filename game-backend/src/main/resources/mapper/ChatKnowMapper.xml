@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.gamebackend.chat.model.mapper.ChatKnowMapper">
+
+    <!-- 키워드로 지식 검색 -->
+    <select id="findByKeyword" parameterType="string" resultType="ChatbotKnowledge">
+        SELECT id, category, keywords, question, answer, priority, is_active, created_at, updated_at
+        FROM chatbot_knowledge
+        WHERE is_active = true
+          AND #{keyword} = ANY(keywords)
+        ORDER BY priority DESC
+        LIMIT 1
+    </select>
+
+    <!-- 카테고리별 지식 조회 -->
+    <select id="findByCategory" parameterType="string" resultType="ChatbotKnowledge">
+        SELECT id, category, keywords, question, answer, priority, is_active, created_at, updated_at
+        FROM chatbot_knowledge
+        WHERE category = #{category}
+          AND is_active = true
+        ORDER BY priority DESC
+    </select>
+
+    <!-- 모든 활성 지식 조회 -->
+    <select id="findAllActive" resultType="ChatbotKnowledge">
+        SELECT id, category, keywords, question, answer, priority, is_active, created_at, updated_at
+        FROM chatbot_knowledge
+        WHERE is_active = true
+        ORDER BY category, priority DESC
+    </select>
+
+    <!-- 인텐트 이름으로 조회 -->
+    <select id="findIntentByName" parameterType="string" resultType="ChatbotIntent">
+        SELECT id, intent_name, description, patterns, responses, is_active, created_at
+        FROM chatbot_intents
+        WHERE intent_name = #{intentName}
+          AND is_active = true
+    </select>
+
+    <!-- 패턴으로 인텐트 검색 -->
+    <select id="findIntentByPattern" parameterType="string" resultType="ChatbotIntent">
+        SELECT id, intent_name, description, patterns, responses, is_active, created_at
+        FROM chatbot_intents
+        WHERE is_active = true
+          AND #{pattern} = ANY(patterns)
+        LIMIT 1
+    </select>
+
+    <!-- 모든 활성 인텐트 조회 -->
+    <select id="findAllIntents" resultType="ChatbotIntent">
+        SELECT id, intent_name, description, patterns, responses, is_active, created_at
+        FROM chatbot_intents
+        WHERE is_active = true
+    </select>
+
+    <!-- 컨텍스트 저장 -->
+    <insert id="saveContext" parameterType="ChatbotContext">
+        INSERT INTO chatbot_context (conversation_id, context_key, context_value, expires_at)
+        VALUES (#{conversationId}, #{contextKey}, #{contextValue}, #{expiresAt})
+    </insert>
+
+    <!-- 컨텍스트 조회 -->
+    <select id="getContext" resultType="ChatbotContext">
+        SELECT id, conversation_id, context_key, context_value, expires_at, created_at
+        FROM chatbot_context
+        WHERE conversation_id = #{conversationId}
+          AND context_key = #{contextKey}
+          AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP)
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- 만료된 컨텍스트 삭제 -->
+    <delete id="deleteExpiredContext">
+        DELETE FROM chatbot_context
+        WHERE expires_at IS NOT NULL
+          AND expires_at &lt; CURRENT_TIMESTAMP
+    </delete>
+</mapper>

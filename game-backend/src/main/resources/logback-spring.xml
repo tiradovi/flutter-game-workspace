@@ -1,7 +1,6 @@
 <configuration scan="true" scanPeriod="60 seconds">
-    <property resource="config.yml" />
-    <property name="logPath"		value="${log.config.path}" />
-    <property name="fileName"		value="${log.config.fileName}" />
+    <springProperty name="logPath" source="log.config.path"/>
+    <springProperty name="fileName" source="log.config.fileName"/>
     <property name="maxHistory"		value="30" />
     <property name="maxFileSize"	value="10MB" />
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
