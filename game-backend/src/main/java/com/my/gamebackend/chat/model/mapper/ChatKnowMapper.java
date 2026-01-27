@@ -24,7 +24,7 @@ public interface ChatKnowMapper {
 
     void saveContext(ChatbotContext context);
 
-    ChatbotContext getContext(@Param("converstaionId") Long converstationId, @Param("contextKey") String contextKey);
+    ChatbotContext getContext(@Param("conversationId") Long conversationId, @Param("contextKey") String contextKey);
 
     void deleteExpiredContext();
 }

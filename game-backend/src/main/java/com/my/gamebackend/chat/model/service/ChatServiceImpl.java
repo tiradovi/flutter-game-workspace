@@ -85,6 +85,8 @@ public class ChatServiceImpl implements ChatService {
     private String generateIntelligentResponse(String message, Long conversationId) {
         String normalizedMessage = message.toLowerCase().trim();
 
+        log.info("문자 확인 - {}", normalizedMessage);
+
         // 1단계: 인텐트 기반 응답 시도
         ChatbotIntent intent = matchIntent(normalizedMessage);
         if (intent != null) {
