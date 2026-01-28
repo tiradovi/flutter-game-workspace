@@ -21,10 +21,15 @@ class GameService {
         color: Colors.green.shade700,
         icon: Icons.catching_pokemon,
       ),
-      GameItem(id: 'puzzle',
-          name: '퍼즐',
+      GameItem(id: 'calendar',
+          name: '캘린더',
           color: Colors.purple,
-          icon: Icons.extension
+          icon: Icons.calendar_month
+      ),
+      GameItem(id: 'user',
+          name: '유저',
+          color: Colors.grey,
+          icon: Icons.person
       ),
       GameItem(id: 'arcade',
           name: '아케이드',
