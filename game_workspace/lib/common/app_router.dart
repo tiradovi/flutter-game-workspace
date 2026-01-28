@@ -1,8 +1,8 @@
 import 'package:game_workspace/models/game_item.dart';
 import 'package:game_workspace/screens/calendar_screen.dart';
-import 'package:game_workspace/screens/calendar_screen.dart';
 import 'package:game_workspace/screens/chat_screen.dart';
 import 'package:game_workspace/screens/main_screen.dart';
+import 'package:game_workspace/screens/user_list_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/apple_catch_screen.dart';
@@ -49,6 +49,17 @@ class AppRouter {
         final game = state.extra as GameItem?;
         return CalendarScreen(
           gameId: 'calendar',
+          gameItem: game,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/user',
+      name: 'user',
+      builder: (context, state) {
+        final game = state.extra as GameItem?;
+        return UserListScreen(
+          gameId: 'user',
           gameItem: game,
         );
       },

@@ -1,5 +1,7 @@
 class ApiConstants {
   static const String baseUrl='http://localhost:8080/api';
+  static const String chatUrl = '$baseUrl/chat';
+  static const String message='/message';
 }
 
 class AppConstants {

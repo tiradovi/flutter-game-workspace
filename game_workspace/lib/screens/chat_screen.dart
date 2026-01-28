@@ -44,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         loading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("오류")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("오류 $e")));
     }
   }
 
